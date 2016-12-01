@@ -1,0 +1,90 @@
+
+html, body, #root {
+  height: 100%;
+  font-size: 12px;
+}
+.ant-layout-topaside {
+  height: 100%;
+}
+
+.ant-layout-topaside .ant-layout-wrapper {
+  padding: 0 50px;
+}
+
+.ant-layout-topaside .ant-layout-header {
+  background: #404040;
+  height: 64px;
+}
+
+.ant-layout-topaside .ant-layout-logo {
+  width: 120px;
+  height: 32px;
+  background: #333;
+  border-radius: 6px;
+  margin: 16px 28px 16px 0;
+  float: left;
+}
+
+.ant-layout-topaside .ant-layout-subheader {
+	display: none;;
+  height: 48px;
+  border-bottom: 1px solid #e9e9e9;
+  background: #fff;
+}
+
+.ant-layout-topaside .ant-layout-breadcrumb {
+  margin: 7px 0 -17px 24px;
+}
+
+.ant-layout-topaside .ant-layout-container {
+  background: #fff;
+  margin: 24px 0 0;
+  position: relative;
+  padding: 24px 0;
+  overflow: hidden;
+}
+
+.ant-layout-topaside .ant-layout-sider {
+  width: 224px;
+  float: left;
+}
+
+.ant-layout-topaside .ant-layout-content {
+  border-left: 1px solid #e9e9e9;
+  padding: 0 24px;
+  overflow: auto;
+  position: relative;
+  left: -1px;
+  min-height: 1000px;
+}
+
+.ant-layout-topaside .ant-layout-footer {
+  height: 64px;
+  line-height: 64px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+.ant-select-lg .ant-select-selection--single,  .ant-input-lg{
+  height: 70px !important;
+}
+.ant-select-selection-selected-value{
+  text-overflow:initial !important;
+}
+.ant-select-lg .ant-select-selection--single{
+  height: 
+}
+.ant-select-lg .ant-select-selection__rendered{
+  line-height: 70px !important;
+}
+.login-form {
+  max-width: 900px;
+  margin-top: 20%;
+}
+.login-form .login-form-forgot {
+  float: right;
+}
+.login-form .login-form-button {
+  width: 100%;
+}
+
