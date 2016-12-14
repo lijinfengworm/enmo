@@ -66,16 +66,16 @@ html, body, #root {
   color: #999;
 }
 .ant-select-lg .ant-select-selection--single,  .ant-input-lg{
-  height: 70px !important;
+  /*height: 70px !important;*/
 }
 .ant-select-selection-selected-value{
   text-overflow:initial !important;
 }
-.ant-select-lg .ant-select-selection--single{
+/*.ant-select-lg .ant-select-selection--single{
   height: 
-}
+}*/
 .ant-select-lg .ant-select-selection__rendered{
-  line-height: 70px !important;
+  /*line-height: 70px !important;*/
 }
 .login-form {
   max-width: 900px;
@@ -86,5 +86,20 @@ html, body, #root {
 }
 .login-form .login-form-button {
   width: 100%;
+}
+.common-top{
+  margin-bottom: 30px;
+}
+#root .ant-layout-sider ul li span{
+  font-size: 12px;
+}
+#root .ant-layout-sider ul li a{
+  font-size: 12px;
+}
+#root .ant-layout-sider .ant-menu-submenu-title{
+  font-size: 12px;
+}
+#root .ant-layout-sider .ant-menu-item a{
+  font-size: 12px;
 }
 

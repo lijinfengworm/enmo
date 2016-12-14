@@ -104,7 +104,7 @@ const EditAirportForm = Form.create()(React.createClass({
     );
     return (
     	<div>
-      		<Layout title="用户中心" sub_title="用户列表" route={this.props.route} >
+      		<Layout title="机场配置" sub_title="编辑" route={this.props.route} keys={['8']} menu={['sub2']} >
 	    		<div className="ant-layout-topaside">
 	    				<Form horizontal onSubmit={this.handleSubmit}>
 				        <FormItem {...formItemLayout} label="编号" >

@@ -17,10 +17,11 @@ const Login = Form.create()(React.createClass({
   render() {
   	const { getFieldDecorator } = this.props.form;
     return (
-    	<div>
-	    	<Row>
-	    	<Col span={12} offset={9}>
-		      <Form onSubmit={this.handleSubmit}  className="login-form">
+    	<Row>
+		    <Col xs={2} sm={4} md={6} lg={8}>Col</Col>
+		    <Col xs={20} sm={16} md={12} lg={8}>
+		    	<div>
+			      <Form onSubmit={this.handleSubmit}  className="login-form">
 			        <FormItem>
 			          {getFieldDecorator('userName', {
 			            rules: [{ required: true, message: 'Please input your username!' }],
@@ -48,10 +49,12 @@ const Login = Form.create()(React.createClass({
 			          </Button>
 			          Or <a>register now!</a>
 			        </FormItem>
-		      </Form>
+			      </Form>
+	  		</div>
 		    </Col>
-		    </Row>
-  		</div>
+		    <Col xs={2} sm={4} md={6} lg={8}>Col</Col>
+		  </Row>
+    	
     );
   },
 }));

@@ -1,33 +1,10 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, Radio } from 'antd';
+import { Form, Input, Tooltip, Icon, message, Cascader, Select, Row, Col, Checkbox, Button, Radio } from 'antd';
 import Layout from '../common/layout';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 let data = {};
-const residences = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
-    }],
-  }],
-}];
 
 const EditAirportForm = Form.create()(React.createClass({
 	getInitialState() {
@@ -36,14 +13,16 @@ const EditAirportForm = Form.create()(React.createClass({
 	      type: 10
 	    };
 	  },
+
 	loadDataFromServer: function(){
-		var url = './test_data/airport_edit.json';
+		var dt = {"id": this.props.params.ttid};
+		var url = 'http://114.55.128.237/sshinfo/aircraft/getById.aspx?data='+JSON.stringify(dt);
 	  	$.ajax({
-	    	url: url,
+	    	url: decodeURIComponent(url),
 	        dataType: 'json',
 	        success: function(data) {
-	        	//console.log(data.name);
-	        	this.props.form.setFieldsValue(data);
+	        	data.aircraft.route_id = data.aircraft.route_id.toString(); 
+	        	this.props.form.setFieldsValue(data.aircraft);
 	        	
 	       }.bind(this)
 	    });
@@ -60,7 +39,23 @@ const EditAirportForm = Form.create()(React.createClass({
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
       	//这应该是个ajax提交
-        console.log('Received values of form: ', values);
+      	if(this.props.params.ttid){
+      		var url = 'http://114.55.128.237/sshinfo/aircraft/add.aspx?data='+JSON.stringify(values);
+      	}else{
+      		var url = 'http://114.55.128.237/sshinfo/aircraft/update.aspx?data='+JSON.stringify(values);
+      	}
+	  	$.ajax({
+	    	url: decodeURIComponent(url),
+	        success: function(data) {
+	        	if(data.resultCode == 1){
+	        		message.success('操作成功!');
+	        	}else{
+	        		message.info('操作失败');
+	        	}
+	        	
+	       }.bind(this)
+	    });
+        
       }
     });
   },
@@ -78,9 +73,7 @@ const EditAirportForm = Form.create()(React.createClass({
   },
   checkConfirm(rule, value, callback) {
     const form = this.props.form;
-    if (value && this.state.passwordDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
+    
     callback();
   },
   render() {
@@ -95,8 +88,8 @@ const EditAirportForm = Form.create()(React.createClass({
         offset: 6,
       },
     };
-    const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86',
+    const prefixSelector = getFieldDecorator('id', {
+      initialValue: this.props.params.ttid,
     })(
       <Select className="icp-selector">
         <Option value="86">+86</Option>
@@ -104,141 +97,111 @@ const EditAirportForm = Form.create()(React.createClass({
     );
     return (
     	<div>
-      		<Layout title="用户中心" sub_title="用户列表" route={this.props.route} >
+      		<Layout title="机场配置" sub_title="飞机列表" route={this.props.route} keys={['8']} menu={['sub2']}  >
 	    		<div className="ant-layout-topaside">
-	    				<Form horizontal onSubmit={this.handleSubmit}>
-				        <FormItem {...formItemLayout} label="编号" >
-				          {getFieldDecorator('id', {
-				            rules: [ {
-				              required: true, message: 'Please input id',
-				            }],
-				          })(
-				            <Input />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="名称"  >
-				          {getFieldDecorator('name', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
+	    			<div className="common-top">
+	    			<a href={`#/airport/aircraft`}>
+	    				<Button type="primary" ><Icon type="left" />Go back</Button></a>
+	    			</div>
+    				<Form horizontal onSubmit={this.handleSubmit}>
+			        
+			        <FormItem {...formItemLayout} label="名称"  >
+			          {getFieldDecorator('name', {
+			            rules: [{
+			              required: true, message: 'Please input your name!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
 
-				        <FormItem {...formItemLayout} label="英文名称"  >
-				          {getFieldDecorator('name_en', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="国家"  >
-				          {getFieldDecorator('county', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="缩写"  >
-				          {getFieldDecorator('abbr', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="经度"  >
-				          {getFieldDecorator('longitude', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="纬度"  >
-				          {getFieldDecorator('latitude', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="海拔"  >
-				          {getFieldDecorator('altitude', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        
-				        <FormItem
-				          {...formItemLayout}
-				          label="类型"
-				        >
-				          {getFieldDecorator('type', {
-				            rules: [
-				              { required: true, message: 'Please select your style!' },
-				            ],
-				          })(
-				            <Select   placeholder="Please select a country">
-				              <Option value="0">航线城市</Option>
-				              <Option value="10" selected>小修中心</Option>
-				              <Option value="20">大修中心 </Option>
-				            </Select>
-				          )}
-				        </FormItem>
+			        <FormItem {...formItemLayout} label="名称"  >
+			          {getFieldDecorator('route_id', {
+			            rules: [{
+			              required: true, message: '输入当前航班号',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        
+			        <FormItem {...formItemLayout} label="当前航班"  >
+			          {getFieldDecorator('airLine', {
+			            rules: [{
+			              required: true, message: '请输入当前航班!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        <FormItem {...formItemLayout} label="现处位置经度"  >
+			          {getFieldDecorator('nowLong', {
+			            rules: [{
+			              required: true, message: '请输入现处位置经度!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        <FormItem {...formItemLayout} label="现处位置纬度"  >
+			          {getFieldDecorator('nowLat', {
+			            rules: [{
+			              required: true, message: 'Please input your name!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        <FormItem {...formItemLayout} label="制造商"  >
+			          {getFieldDecorator('manufacturer', {
+			            rules: [{
+			              required: true, message: 'Please input your name!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        
 
-				        <FormItem {...formItemLayout} label="标签"  >
-				          {getFieldDecorator('marks', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        <FormItem {...formItemLayout} label="备注"  >
-				          {getFieldDecorator('notes', {
-				            rules: [{
-				              required: true, message: 'Please input your name!',
-				            }, {
-				              validator: this.checkConfirm,
-				            }],
-				          })(
-				            <Input  />
-				          )}
-				        </FormItem>
-				        
-				        <FormItem {...tailFormItemLayout}>
-				          <Button type="primary" htmlType="submit" size="large">保存</Button>
-				        </FormItem>
-				      </Form>
+			        <FormItem {...formItemLayout} label="标签"  >
+			          {getFieldDecorator('marks', {
+			            rules: [{
+			              required: true, message: 'Please input your name!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        <FormItem {...formItemLayout} label="备注"  >
+			          {getFieldDecorator('notes', {
+			            rules: [{
+			              required: true, message: 'Please input your name!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        
+			        <FormItem {...tailFormItemLayout}>
+			          <Button type="primary" htmlType="submit" size="large">保存</Button>
+			        </FormItem>
+			      </Form>
 	    		</div>
 		  	</Layout>
 	  	</div>

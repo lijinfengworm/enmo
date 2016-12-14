@@ -57,14 +57,15 @@ const Layout = React.createClass({
 		                <Menu.Item key="2"><Link to="/auth">权限设置</Link></Menu.Item>
 		              </SubMenu>
 		              <SubMenu key="sub2" title={<span><Icon type="laptop" />机场配置</span>}>
-		                <Menu.Item key="5"><Link to="/airport/list">机场列表</Link></Menu.Item>
-		                <Menu.Item key="6"><Link to="/airport/route">航线配置</Link></Menu.Item>
-		                <Menu.Item key="7"><Link to="/airport/flight">航班配置</Link></Menu.Item>
-		                <Menu.Item key="8"><Link to="/airport/aircraft">飞机配置</Link></Menu.Item>
+		                <Menu.Item key="5"><Link to="city">城市列表</Link></Menu.Item>
+		                <Menu.Item key="6"><Link to="route">航线配置</Link></Menu.Item>
+		                <Menu.Item key="7"><Link to="flight">航班配置</Link></Menu.Item>
+		                <Menu.Item key="8"><Link to="aircraft">飞机配置</Link></Menu.Item>
 		              </SubMenu>
 		              <SubMenu key="sub3" title={<span><Icon type="notification" />发动机配置</span>}>
 		                <Menu.Item key="9">发动机</Menu.Item>
-		                <Menu.Item key="10">传感器</Menu.Item>
+		                <Menu.Item key="10"><Link to="sensor">传感器</Link></Menu.Item>
+		                <Menu.Item key="11"><Link to="sensorgroup">传感器组</Link></Menu.Item>
 		              </SubMenu>
 		            </Menu>
 		          </aside>

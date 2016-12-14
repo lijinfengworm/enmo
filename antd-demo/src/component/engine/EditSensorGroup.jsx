@@ -6,7 +6,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 let data = {};
 
-const EditRoute = Form.create()(React.createClass({
+const EditSensorGroup = Form.create()(React.createClass({
 	getInitialState() {
 	  	return {
 	      name: '',
@@ -16,12 +16,13 @@ const EditRoute = Form.create()(React.createClass({
 
 	loadDataFromServer: function(){
 		var dt = {"id": this.props.params.ttid};
-		var url = 'http://114.55.128.237/sshinfo/route/getById.aspx?data='+JSON.stringify(dt);
+		var url = 'http://114.55.128.237/sshinfo/sensorgroup/getById.aspx?data='+JSON.stringify(dt);
 	  	$.ajax({
 	    	url: decodeURIComponent(url),
 	        dataType: 'json',
 	        success: function(data) {
-	        	this.props.form.setFieldsValue(data.route);
+	        	console.log(data);
+	        	this.props.form.setFieldsValue(data.sensorGroup);
 	        	
 	       }.bind(this)
 	    });
@@ -39,9 +40,9 @@ const EditRoute = Form.create()(React.createClass({
       if (!err) {
       	//这应该是个ajax提交
       	if(this.props.params.ttid){
-      		var url = 'http://114.55.128.237/sshinfo/route/add.aspx?data='+JSON.stringify(values);
+      		var url = 'http://114.55.128.237/sshinfo/sensorgroup/add.aspx?data='+JSON.stringify(values);
       	}else{
-      		var url = 'http://114.55.128.237/sshinfo/route/update.aspx?data='+JSON.stringify(values);
+      		var url = 'http://114.55.128.237/sshinfo/sensorgroup/update.aspx?data='+JSON.stringify(values);
       	}
 	  	$.ajax({
 	    	url: decodeURIComponent(url),
@@ -96,10 +97,10 @@ const EditRoute = Form.create()(React.createClass({
     );
     return (
     	<div>
-      		<Layout title="机场配置" sub_title="航线编辑" route={this.props.route} keys={['6']} menu={['sub2']}  >
+      		<Layout title="机场配置" sub_title="飞机列表" route={this.props.route} keys={['11']} menu={['sub3']}  >
 	    		<div className="ant-layout-topaside">
 	    			<div className="common-top">
-	    			<a href={`#/route`}>
+	    			<a href={`#/airport/aircraft`}>
 	    				<Button type="primary" ><Icon type="left" />Go back</Button></a>
 	    			</div>
     				<Form horizontal onSubmit={this.handleSubmit}>
@@ -115,40 +116,6 @@ const EditRoute = Form.create()(React.createClass({
 			            <Input  />
 			          )}
 			        </FormItem>
-
-			        <FormItem
-				          {...formItemLayout}
-				          label="起飞城市"
-				        >
-				          {getFieldDecorator('type', {
-				            rules: [
-				              { required: true, message: 'Please select your style!' },
-				            ],
-				          })(
-				            <Select   placeholder="Please select a country">
-				              <Option value="0">上海</Option>
-				              <Option value="10" selected>北京</Option>
-				              <Option value="20">新郑 </Option>
-				            </Select>
-				          )}
-				    </FormItem>
-			        
-			        <FormItem
-				          {...formItemLayout}
-				          label="降落城市"
-				        >
-				          {getFieldDecorator('type', {
-				            rules: [
-				              { required: true, message: 'Please select your style!' },
-				            ],
-				          })(
-				            <Select   placeholder="Please select a country">
-				              <Option value="0">上海</Option>
-				              <Option value="10" selected>北京</Option>
-				              <Option value="20">新郑 </Option>
-				            </Select>
-				          )}
-				    </FormItem>
 
 			        <FormItem {...formItemLayout} label="标签"  >
 			          {getFieldDecorator('marks', {
@@ -185,4 +152,4 @@ const EditRoute = Form.create()(React.createClass({
   },
 }));
 
-export default EditRoute;
+export default EditSensorGroup;

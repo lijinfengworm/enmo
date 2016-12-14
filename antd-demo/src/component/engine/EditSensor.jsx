@@ -6,7 +6,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 let data = {};
 
-const EditRoute = Form.create()(React.createClass({
+const EditSensor = Form.create()(React.createClass({
 	getInitialState() {
 	  	return {
 	      name: '',
@@ -16,12 +16,15 @@ const EditRoute = Form.create()(React.createClass({
 
 	loadDataFromServer: function(){
 		var dt = {"id": this.props.params.ttid};
-		var url = 'http://114.55.128.237/sshinfo/route/getById.aspx?data='+JSON.stringify(dt);
+		var url = 'http://114.55.128.237/sshinfo/sensorinfo/getById.aspx?data='+JSON.stringify(dt);
 	  	$.ajax({
 	    	url: decodeURIComponent(url),
 	        dataType: 'json',
 	        success: function(data) {
-	        	this.props.form.setFieldsValue(data.route);
+	        	console.log(data);
+	        	data.sensorInfo.groupid = data.sensorInfo.toString(); 
+	        	data.sensorInfo.engine_id = data.sensorInfo.engine_id.toString(); 
+	        	this.props.form.setFieldsValue(data.sensorInfo);
 	        	
 	       }.bind(this)
 	    });
@@ -39,9 +42,9 @@ const EditRoute = Form.create()(React.createClass({
       if (!err) {
       	//这应该是个ajax提交
       	if(this.props.params.ttid){
-      		var url = 'http://114.55.128.237/sshinfo/route/add.aspx?data='+JSON.stringify(values);
+      		var url = 'http://114.55.128.237/sshinfo/sensorinfo/add.aspx?data='+JSON.stringify(values);
       	}else{
-      		var url = 'http://114.55.128.237/sshinfo/route/update.aspx?data='+JSON.stringify(values);
+      		var url = 'http://114.55.128.237/sshinfo/sensorinfo/update.aspx?data='+JSON.stringify(values);
       	}
 	  	$.ajax({
 	    	url: decodeURIComponent(url),
@@ -96,10 +99,10 @@ const EditRoute = Form.create()(React.createClass({
     );
     return (
     	<div>
-      		<Layout title="机场配置" sub_title="航线编辑" route={this.props.route} keys={['6']} menu={['sub2']}  >
+      		<Layout title="机场配置" sub_title="传感器编辑" route={this.props.route} keys={['10']} menu={['sub3']}  >
 	    		<div className="ant-layout-topaside">
 	    			<div className="common-top">
-	    			<a href={`#/route`}>
+	    			<a href={`#/sensor`}>
 	    				<Button type="primary" ><Icon type="left" />Go back</Button></a>
 	    			</div>
     				<Form horizontal onSubmit={this.handleSubmit}>
@@ -116,44 +119,46 @@ const EditRoute = Form.create()(React.createClass({
 			          )}
 			        </FormItem>
 
-			        <FormItem
-				          {...formItemLayout}
-				          label="起飞城市"
-				        >
-				          {getFieldDecorator('type', {
-				            rules: [
-				              { required: true, message: 'Please select your style!' },
-				            ],
-				          })(
-				            <Select   placeholder="Please select a country">
-				              <Option value="0">上海</Option>
-				              <Option value="10" selected>北京</Option>
-				              <Option value="20">新郑 </Option>
-				            </Select>
-				          )}
-				    </FormItem>
+			        <FormItem {...formItemLayout} label="传感器ID"  >
+			          {getFieldDecorator('engine_id', {
+			            rules: [{
+			              required: true, message: '输入当前传感器ID',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
 			        
-			        <FormItem
-				          {...formItemLayout}
-				          label="降落城市"
-				        >
-				          {getFieldDecorator('type', {
-				            rules: [
-				              { required: true, message: 'Please select your style!' },
-				            ],
-				          })(
-				            <Select   placeholder="Please select a country">
-				              <Option value="0">上海</Option>
-				              <Option value="10" selected>北京</Option>
-				              <Option value="20">新郑 </Option>
-				            </Select>
-				          )}
-				    </FormItem>
+			        <FormItem {...formItemLayout} label="传感器制造商"  >
+			          {getFieldDecorator('manufacturer', {
+			            rules: [{
+			              required: true, message: '请输入传感器制造商!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        <FormItem {...formItemLayout} label="经度,维度,海拔"  >
+			          {getFieldDecorator('xyz', {
+			            rules: [{
+			              required: true, message: '请输入现处经度,维度,海拔!',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
+			        
 
 			        <FormItem {...formItemLayout} label="标签"  >
 			          {getFieldDecorator('marks', {
 			            rules: [{
-			              required: true, message: 'Please input your name!',
+			              required: true, message: 'Please input your marks!',
 			            }, {
 			              validator: this.checkConfirm,
 			            }],
@@ -164,7 +169,7 @@ const EditRoute = Form.create()(React.createClass({
 			        <FormItem {...formItemLayout} label="备注"  >
 			          {getFieldDecorator('notes', {
 			            rules: [{
-			              required: true, message: 'Please input your name!',
+			              required: true, message: 'Please input your notes!',
 			            }, {
 			              validator: this.checkConfirm,
 			            }],
@@ -185,4 +190,4 @@ const EditRoute = Form.create()(React.createClass({
   },
 }));
 
-export default EditRoute;
+export default EditSensor;
