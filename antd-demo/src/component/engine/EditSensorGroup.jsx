@@ -7,6 +7,9 @@ const RadioGroup = Radio.Group;
 let data = {};
 
 const EditSensorGroup = Form.create()(React.createClass({
+	contextTypes: {
+	    router: React.PropTypes.object
+	},
 	getInitialState() {
 	  	return {
 	      name: '',
@@ -39,7 +42,7 @@ const EditSensorGroup = Form.create()(React.createClass({
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
       	//这应该是个ajax提交
-      	if(this.props.params.ttid){
+      	if(!this.props.params.ttid){
       		var url = 'http://114.55.128.237/sshinfo/sensorgroup/add.aspx?data='+JSON.stringify(values);
       	}else{
       		var url = 'http://114.55.128.237/sshinfo/sensorgroup/update.aspx?data='+JSON.stringify(values);
@@ -49,6 +52,7 @@ const EditSensorGroup = Form.create()(React.createClass({
 	        success: function(data) {
 	        	if(data.resultCode == 1){
 	        		message.success('操作成功!');
+	        		this.context.router.push('sensorgroup');
 	        	}else{
 	        		message.info('操作失败');
 	        	}
@@ -100,7 +104,7 @@ const EditSensorGroup = Form.create()(React.createClass({
       		<Layout title="机场配置" sub_title="飞机列表" route={this.props.route} keys={['11']} menu={['sub3']}  >
 	    		<div className="ant-layout-topaside">
 	    			<div className="common-top">
-	    			<a href={`#/airport/aircraft`}>
+	    			<a href={`/#/sensorgroup`}>
 	    				<Button type="primary" ><Icon type="left" />Go back</Button></a>
 	    			</div>
     				<Form horizontal onSubmit={this.handleSubmit}>

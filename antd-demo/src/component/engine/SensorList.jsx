@@ -4,7 +4,7 @@ import { Menu, Breadcrumb, Icon, Popconfirm, message, Button, Row, Col } from 'a
 import { Table } from 'antd';
 
 import Layout from '../common/layout';
-
+import EditableTable from '../common/editTable';
 
 let data = [];
 
@@ -29,41 +29,9 @@ const columns = [
 	{title: '经纬海',dataIndex: 'xyz'},
 	{title: '标签',dataIndex: 'marks'},
 	{title: '备注',dataIndex: 'notes'},
-	{
-	  title: '操作',
-	  dataIndex: 'edit',
-	  render: function (text, record, index) {
-	    return (
-	    	<div>
-          <Popconfirm title="确定要删除此纪录?" onConfirm={() => deleteUser(record.id, index)} onCancel={cancel} okText="Yes" cancelText="No"><a href="#">Delete</a></Popconfirm>
-	    		&nbsp;&nbsp;&nbsp;&nbsp;
-		    	<a href={`#/sensor_edit/${record.id}`}>编辑</a>
-	    	</div>
-	    );
-	    
-	  }
-	}
+	
 ];
-function deleteUser(key, index){
-  //删除用户操作
-  var del = {'id': key};
-  var url = 'http://114.55.128.237/sshinfo/sensorinfo/del.aspx?data='+JSON.stringify(del);
-  $.ajax({
-    url: decodeURIComponent(url),
-      dataType: 'json',
-      success: function(data) {
-        if(data.resultCode == 1){
-          message.success('删除成功!');
-          browserHistory.push('/#/sensorgroup')
-        }else{
-          message.info('删除失败');
-        }
-     }.bind(this)
-  });
-}
-function cancel() {
-  
-}
+
 const SensorList = React.createClass({
 	
     componentDidMount: function () {
@@ -75,6 +43,7 @@ const SensorList = React.createClass({
         $.getJSON(url, function (dataObj) {
           data = [];
         	$.each(dataObj.list, function(i, item) {
+            item['edit'] = "sensor_edit";
         		data.push(item);
         	});
             self.setState({
@@ -96,7 +65,7 @@ const SensorList = React.createClass({
             </Row>
             
           </div>
-    			<Table columns={columns} dataSource={data}  />
+    			<EditableTable parent_columns={columns} parent_dataSource={data} parent_del_url="http://114.55.128.237/sshinfo/sensorinfo/del.aspx"  />
     		</div>
 		  	</Layout>
 	  </div>

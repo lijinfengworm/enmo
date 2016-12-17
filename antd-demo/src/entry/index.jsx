@@ -49,7 +49,7 @@ render((
 			<Route path="route_edit/:ttid" component={EditRoute} />
 			
 			<Route path="sensor" component={SensorList} />
-			<Route path="sensor_edit/:ttid" component={EditSensorGroup} />
+			<Route path="sensor_edit/:ttid" component={EditSensor} />
 
 			<Route path="sensorgroup" component={SensorGroupList} />
 			<Route path="sensorgroup_edit/:ttid" component={EditSensorGroup} />

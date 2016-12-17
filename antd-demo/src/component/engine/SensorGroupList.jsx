@@ -4,7 +4,7 @@ import { Menu, Breadcrumb, Icon, Popconfirm, message, Button, Row, Col } from 'a
 import { Table } from 'antd';
 
 import Layout from '../common/layout';
-
+import EditableTable from '../common/editTable';
 
 let data = [];
 
@@ -25,40 +25,8 @@ const columns = [
 	{title: '名称',dataIndex: 'name'},
 	{title: '标签',dataIndex: 'marks'},
 	{title: '备注',dataIndex: 'notes'},
-	{
-	  title: '操作',
-	  dataIndex: 'edit',
-	  render: function (text, record, index) {
-	    return (
-	    	<div>
-          <Popconfirm title="确定要删除此纪录?" onConfirm={() => deleteUser(record.id, index)} onCancel={cancel} okText="Yes" cancelText="No"><a href="#">Delete</a></Popconfirm>
-	    		&nbsp;&nbsp;&nbsp;&nbsp;
-		    	<a href={`#/sensorgroup_edit/${record.id}`}>编辑</a>
-	    	</div>
-	    );
-	    
-	  }
-	}
 ];
-function deleteUser(key, index){
-  //删除用户操作
-  var del = {'id': key};
-  var url = 'http://114.55.128.237/sshinfo/sensorgroup/del.aspx?data='+JSON.stringify(del);
-  $.ajax({
-    url: decodeURIComponent(url),
-      dataType: 'json',
-      success: function(data) {
-        if(data.resultCode == 1){
-          message.success('删除成功!');
-        }else{
-          message.info('删除失败');
-        }
-     }.bind(this)
-  });
-}
-function cancel() {
-  
-}
+
 const SensorGroupList = React.createClass({
     componentDidMount: function () {
         this.fetchData();
@@ -68,8 +36,10 @@ const SensorGroupList = React.createClass({
         var self = this;
         var url = 'http://114.55.128.237/sshinfo/sensorgroup/list.aspx';
         $.getJSON(url, function (dataObj) {
-          	data = [];
+          data = [];
+          console.log(columns);
         	$.each(dataObj.list, function(i, item) {
+            item['edit'] = "sensorgroup_edit";
         		data.push(item);
         	});
             self.setState({
@@ -91,7 +61,7 @@ const SensorGroupList = React.createClass({
             </Row>
             
           </div>
-    			<Table columns={columns} dataSource={data}  />
+    			<EditableTable parent_columns={columns} parent_dataSource={data} parent_del_url="http://114.55.128.237/sshinfo/sensorgroup/del.aspx"  />
     		</div>
 		  	</Layout>
 	  </div>

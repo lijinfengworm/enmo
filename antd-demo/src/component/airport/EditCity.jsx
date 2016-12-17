@@ -7,6 +7,9 @@ const RadioGroup = Radio.Group;
 let data = {};
 
 const EditCity = Form.create()(React.createClass({
+	contextTypes: {
+	    router: React.PropTypes.object
+	},
 	getInitialState() {
 	  	return {
 	      name: '',
@@ -50,6 +53,7 @@ const EditCity = Form.create()(React.createClass({
 	        success: function(data) {
 	        	if(data.resultCode == 1){
 	        		message.success('操作成功!');
+	        		this.context.router.push('city');
 	        	}else{
 	        		message.info('操作失败');
 	        	}

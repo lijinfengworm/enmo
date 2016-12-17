@@ -7,6 +7,9 @@ const RadioGroup = Radio.Group;
 let data = {};
 
 const EditRoute = Form.create()(React.createClass({
+	contextTypes: {
+	    router: React.PropTypes.object
+	},
 	getInitialState() {
 	  	return {
 	      name: '',
@@ -48,6 +51,7 @@ const EditRoute = Form.create()(React.createClass({
 	        success: function(data) {
 	        	if(data.resultCode == 1){
 	        		message.success('操作成功!');
+	        		this.context.router.push('route');
 	        	}else{
 	        		message.info('操作失败');
 	        	}
@@ -99,7 +103,7 @@ const EditRoute = Form.create()(React.createClass({
       		<Layout title="机场配置" sub_title="航线编辑" route={this.props.route} keys={['6']} menu={['sub2']}  >
 	    		<div className="ant-layout-topaside">
 	    			<div className="common-top">
-	    			<a href={`#/route`}>
+	    			<a href={`/#/route`}>
 	    				<Button type="primary" ><Icon type="left" />Go back</Button></a>
 	    			</div>
     				<Form horizontal onSubmit={this.handleSubmit}>

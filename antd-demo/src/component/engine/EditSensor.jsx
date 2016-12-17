@@ -7,6 +7,9 @@ const RadioGroup = Radio.Group;
 let data = {};
 
 const EditSensor = Form.create()(React.createClass({
+	contextTypes: {
+	    router: React.PropTypes.object
+	},
 	getInitialState() {
 	  	return {
 	      name: '',
@@ -22,7 +25,7 @@ const EditSensor = Form.create()(React.createClass({
 	        dataType: 'json',
 	        success: function(data) {
 	        	console.log(data);
-	        	data.sensorInfo.groupid = data.sensorInfo.toString(); 
+	        	data.sensorInfo.groupid = data.sensorInfo.groupid.toString(); 
 	        	data.sensorInfo.engine_id = data.sensorInfo.engine_id.toString(); 
 	        	this.props.form.setFieldsValue(data.sensorInfo);
 	        	
@@ -41,7 +44,7 @@ const EditSensor = Form.create()(React.createClass({
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
       	//这应该是个ajax提交
-      	if(this.props.params.ttid){
+      	if(!this.props.params.ttid){
       		var url = 'http://114.55.128.237/sshinfo/sensorinfo/add.aspx?data='+JSON.stringify(values);
       	}else{
       		var url = 'http://114.55.128.237/sshinfo/sensorinfo/update.aspx?data='+JSON.stringify(values);
@@ -51,6 +54,7 @@ const EditSensor = Form.create()(React.createClass({
 	        success: function(data) {
 	        	if(data.resultCode == 1){
 	        		message.success('操作成功!');
+	        		this.context.router.push('sensor');
 	        	}else{
 	        		message.info('操作失败');
 	        	}
@@ -118,7 +122,17 @@ const EditSensor = Form.create()(React.createClass({
 			            <Input  />
 			          )}
 			        </FormItem>
-
+			        <FormItem {...formItemLayout} label="传感器组"  >
+			          {getFieldDecorator('groupid', {
+			            rules: [{
+			              required: true, message: '输入当前传感器组',
+			            }, {
+			              validator: this.checkConfirm,
+			            }],
+			          })(
+			            <Input  />
+			          )}
+			        </FormItem>
 			        <FormItem {...formItemLayout} label="传感器ID"  >
 			          {getFieldDecorator('engine_id', {
 			            rules: [{

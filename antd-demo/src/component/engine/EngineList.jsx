@@ -4,7 +4,7 @@ import { Menu, Breadcrumb, Icon } from 'antd';
 import { Table } from 'antd';
 
 import Layout from '../common/layout';
-
+import EditableTable from '../common/editTable';
 var deleteUser = function(key, index){
 	//删除用户操作
 	console.log(key);
